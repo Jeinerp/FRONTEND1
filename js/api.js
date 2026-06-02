@@ -2,7 +2,17 @@
    API.JS — Centralized HTTP Service
    ======================================== */
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+// Aseguramos que la URL base siempre use el subdominio /api limpiamente en producción y local
+const getBaseUrl = () => {
+    const envUrl = import.meta.env.VITE_API_URL;
+    if (envUrl) {
+        // Si la variable de Netlify no termina en /api, se lo agregamos dinámicamente controlando las barras
+        return envUrl.endsWith('/api') ? envUrl : `${envUrl.replace(/\/$/, '')}/api`;
+    }
+    return 'http://localhost:8000/api';
+};
+
+const API_BASE = getBaseUrl();
 
 class ApiService {
     async request(endpoint, options = {}) {
@@ -13,8 +23,11 @@ class ApiService {
             ...options.headers
         };
 
+        // Forzamos que el endpoint empiece con '/' para evitar errores de concatenación
+        const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+
         try {
-            const response = await fetch(`${API_BASE}${endpoint}`, {
+            const response = await fetch(`${API_BASE}${cleanEndpoint}`, {
                 ...options,
                 headers
             });
@@ -22,7 +35,7 @@ class ApiService {
             if (response.status === 401) {
                 const refreshed = await this.refreshToken();
                 if (refreshed) {
-                    return this.request(endpoint, options);
+                    return this.request(cleanEndpoint, options);
                 }
                 window.location.hash = '#/login';
                 const err = new Error('Unauthorized');

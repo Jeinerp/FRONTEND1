@@ -8,7 +8,7 @@ const getBaseUrl = () => {
         // Si la variable de Netlify no termina en /api, se lo agregamos dinámicamente controlando las barras
         return envUrl.endsWith('/api') ? envUrl : `${envUrl.replace(/\/$/, '')}/api`;
     }
-    return 'http://localhost:8000/api';
+    return 'https://backend1-production-75db.up.railway.app/api';
 };
 
 const API_BASE = getBaseUrl();

@@ -74,6 +74,7 @@ async function loadUsuarios(container) {
             { key: 'idusuarios', label: 'ID' },
             { key: 'nombre', label: 'Nombre', render: (v, row) => `<strong style="color:var(--text-primary)">${v || ''} ${row.apellido || ''}</strong>` },
             { key: 'username', label: 'Usuario', render: (v) => `<code style="color:var(--primary);">@${v}</code>` },
+            { key: 'email', label: 'Correo Electrónico', render: (v) => v || '—' },
         ],
         data,
         actions: [
@@ -89,11 +90,17 @@ function openUserForm(item, allData) {
     const isEdit = !!item;
     const body = `
         <div class="form-row"><div class="form-group"><label class="form-label">Nombre</label><input class="form-input" id="f-nombre" value="${item?.nombre || ''}"></div><div class="form-group"><label class="form-label">Apellido</label><input class="form-input" id="f-apellido" value="${item?.apellido || ''}"></div></div>
+        <div class="form-group"><label class="form-label">Correo Electrónico</label><input class="form-input" id="f-email" type="email" placeholder="correo@ejemplo.com" value="${item?.email || ''}"></div>
         <div class="form-group"><label class="form-label">Username</label><input class="form-input" id="f-username" value="${item?.username || ''}"></div>
         <div class="form-group"><label class="form-label">Contraseña${isEdit ? ' (dejar vacío para no cambiar)' : ''}</label><input class="form-input" id="f-password" type="password" placeholder="${isEdit ? '••••••••' : 'Contraseña'}"></div>
     `;
     openModal(isEdit ? 'Editar Usuario' : 'Nuevo Usuario', body, async () => {
-        const payload = { nombre: document.getElementById('f-nombre').value, apellido: document.getElementById('f-apellido').value, username: document.getElementById('f-username').value };
+        const payload = { 
+            nombre: document.getElementById('f-nombre').value, 
+            apellido: document.getElementById('f-apellido').value, 
+            username: document.getElementById('f-username').value,
+            email: document.getElementById('f-email').value
+        };
         const pw = document.getElementById('f-password').value;
         if (pw) payload.password = pw;
         if (isEdit) await api.put(`/usuarios/${item.idusuarios}/`, payload);

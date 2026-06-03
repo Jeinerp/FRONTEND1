@@ -1,9 +1,6 @@
 /* ========================================
    API.JS — Centralized HTTP Service
    ======================================== */
-
- HEAD
-const API_BASE = import.meta.env.VITE_API_URL || 'https://backend1-production-75db.up.railway.app/api';
 // Aseguramos que la URL base siempre use el subdominio /api limpiamente en producción y local
 const getBaseUrl = () => {
     const envUrl = import.meta.env.VITE_API_URL;

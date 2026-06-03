@@ -1,11 +1,15 @@
 /* ========================================
    AUTH.JS — Authentication Service
    ======================================== */
+const getBaseUrl = () => {
+    const envUrl = import.meta.env.VITE_API_URL;
+    if (envUrl) {
+        return envUrl.endsWith('/api') ? envUrl : `${envUrl.replace(/\/$/, '')}/api`;
+    }
+    return 'https://backend1-production-75db.up.railway.app/api';
+};
 
-HEAD
-const API_BASE = import.meta.env.VITE_API_URL || 'https://backend1-production-75db.up.railway.app/api';
-const API_BASE = import.meta.env.VITE_API_URL || 'https://monitoreoiot.netlify.app';
-
+const API_BASE = getBaseUrl();
 
 class AuthService {
     async login(username, password) {

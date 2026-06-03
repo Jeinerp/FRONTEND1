@@ -12,6 +12,23 @@ const getBaseUrl = () => {
 const API_BASE = getBaseUrl();
 
 class AuthService {
+    async recuperarPassword(username, email, newPassword) {
+        const response = await fetch(`${API_BASE}/recuperar-password/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, new_password: newPassword })
+        });
+
+        if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            const err = new Error(data.error || 'No se pudo restablecer la contraseña');
+            err.status = response.status;
+            throw err;
+        }
+
+        return await response.json();
+    }
+
     async login(username, password) {
         const response = await fetch(`${API_BASE}/login/`, {
             method: 'POST',

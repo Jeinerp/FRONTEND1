@@ -99,6 +99,20 @@
 }
 .login-error.show { display: flex; }
 
+.login-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    margin-bottom: var(--space-md);
+    display: none;
+    align-items: center;
+    gap: var(--space-sm);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.login-success.show { display: flex; }
+
 /* --- Dashboard Hero Banner --- */
 .dash-hero {
     position: relative;

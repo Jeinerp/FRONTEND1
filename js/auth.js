@@ -2,7 +2,10 @@
    AUTH.JS — Authentication Service
    ======================================== */
 
+HEAD
 const API_BASE = import.meta.env.VITE_API_URL || 'https://backend1-production-75db.up.railway.app/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://monitoreoiot.netlify.app';
+
 
 class AuthService {
     async login(username, password) {
